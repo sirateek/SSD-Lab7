@@ -25,17 +25,18 @@ public class GameClient {
     private Gui gui = new Gui();
     private World world;
     private Player myPlayer;
-    private GameLogic logic;
+    // private GameLogic logic;
     private boolean running;
+    private MoveStrategy logic;
 
-    public void start() {
+    public void start(MoveStrategy moveStrategy) {
         initNetwork();
-        initLogic();
+        initLogic(moveStrategy);
         gui.setVisible(true);
     }
 
-    private void initLogic() {
-        logic = new GameLogic();
+    private void initLogic(MoveStrategy moveStrategy) {
+        logic = moveStrategy;
         running = true;
         Thread logicThread = new Thread() {
             @Override

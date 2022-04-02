@@ -1,16 +1,17 @@
 package agarssd.client;
 
+import java.util.Random;
+
 import agarssd.model.MoveCommand;
 import agarssd.model.Player;
 import agarssd.model.World;
 
-import java.util.Random;
-
-public class GameLogic {
+public class RandomStrategy implements MoveStrategy {
 
     private Random random = new Random();
     private long lastCommand;
 
+    @Override
     public MoveCommand getNextMoveCommand(World world, Player myPlayer) {
         if(world == null) {
             return null;
@@ -25,4 +26,5 @@ public class GameLogic {
         command.toY = random.nextInt(world.size);
         return command;
     }
+
 }
