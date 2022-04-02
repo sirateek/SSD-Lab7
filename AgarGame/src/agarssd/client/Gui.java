@@ -109,6 +109,7 @@ public class Gui extends JFrame {
             if(p.id == myPlayer.id) {
                 g.drawString("You", (int)(p.positionX + p.size), (int)(p.positionY + p.size));
             }
+            g.drawLine((int)p.positionX, (int)p.positionY, (int)p.destinationX, (int)p.destinationY);
         }
     }
 
