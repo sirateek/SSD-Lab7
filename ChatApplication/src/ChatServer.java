@@ -5,12 +5,15 @@ import com.esotericsoftware.kryonet.Server;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ChatServer extends JFrame {
     public static final int PORT = 5455;
 
     private Server server;
     private JTextArea screen;
+    private ArrayList<Message> chatHistory = new ArrayList<Message>();
+
 
     public ChatServer() {
         server = new Server();
@@ -21,8 +24,9 @@ public class ChatServer extends JFrame {
                 super.received(connection, object);
                 if (object instanceof Message) {
                     Message message = (Message) object;
+                    // Store the message as history of messages.
+                    chatHistory.add(message);
                     screen.append("Received message " + message.text + " From " + message.senderName + "\n");
-
                     server.sendToAllTCP(message);  // broadcast
                 }
             }
@@ -31,6 +35,12 @@ public class ChatServer extends JFrame {
             public void connected(Connection connection) {
                 super.connected(connection);
                 screen.append("New client connected\n");
+                // After new client connected,
+                // Replay the message from stored chatHistory.
+                for (Message item: chatHistory) {
+                    connection.sendTCP(item);
+                }
+                
             }
 
             @Override
